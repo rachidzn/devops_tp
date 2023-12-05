@@ -1,0 +1,168 @@
+1. Affichez le nombre d'attributs par document ainsi que l'attribut name. Combien y a-t-il d'attribut par document ? N'affichez que les 12 premières lignes avec la commande head
+{
+  "name": "Luke Skywalker",
+  "count": 17
+}
+{
+  "name": "C-3PO",
+  "count": 17
+}
+{
+  "name": "R2-D2",
+  "count": 17
+}
+cat people.json | jq .[] | jq '{name, count: length}' | head -n 12
+Réponse : il y a 17 attributs par document
+
+---------------------------------
+
+2. Combien y a-t-il de valeur unknown pour l'attribut birth_year ? Utilisez la commande tail afin d'isoler la réponse.
+{
+  "birth_year": "unknown",
+  "count": 42
+}
+people.json | jq 'group_by(.birth_year)[] | {birth_year: .[0].birth_year, count: length}' | tail -n 4
+Réponse : il y a  42 valeurs 'unknown' pour l'attribut 'birth_year'
+
+---------------------------------
+
+3. Affichez la date de création de chaque personnage et son nom. La date de création doit être de cette forme : l'année, le mois et le jour. N'affichez que les 10 premières lignes. (Pas de Réponse attendue)
+{
+  "name": "Luke Skywalker",
+  "created": "2014-12-09"
+}
+{
+  "name": "C-3PO",
+  "created": "2014-12-10"
+}
+{
+  "name": "R2-D2",
+  "created": "2014-12-10"
+}
+{
+  "name": "Darth Vader",
+  "created": "2014-12-10"
+}
+{
+  "name": "Leia Organa",
+  "created": "2014-12-10"
+}
+{
+  "name": "Owen Lars",
+  "created": "2014-12-10"
+}
+{
+  "name": "Beru Whitesun lars",
+  "created": "2014-12-10"
+}
+{
+  "name": "R5-D4",
+  "created": "2014-12-10"
+}
+{
+  "name": "Biggs Darklighter",
+  "created": "2014-12-10"
+}
+{
+  "name": "Obi-Wan Kenobi",
+  "created": "2014-12-10"
+}
+Commande : cat people.json | jq '.[:10] | .[] | {name, created: .created[0:10]}'
+Réponse : Pas de réponse attendue
+
+---------------------------------
+
+4. Certains personnages sont nés en même temps. Retrouvez toutes les pairs d'ids (2 ids) des personnages nés en même temps.
+{
+  "id": 1,
+  "name": "Luke Skywalker",
+  "birth_year": "19BBY",
+  "count": 2
+}
+{
+  "id": 1,
+  "name": "Leia Organa",
+  "birth_year": "19BBY",
+  "count": 2
+}
+{
+  "id": 4,
+  "name": "Darth Vader",
+  "birth_year": "41.9BBY",
+  "count": 2
+}
+{
+  "id": 4,
+  "name": "Anakin Skywalker",
+  "birth_year": "41.9BBY",
+  "count": 2
+}
+{
+  "id": 6,
+  "name": "Owen Lars",
+  "birth_year": "52BBY",
+  "count": 2
+}
+{
+  "id": 6,
+  "name": "Jar Jar Binks",
+  "birth_year": "52BBY",
+  "count": 2
+}
+{
+  "id": 43,
+  "name": "Shmi Skywalker",
+  "birth_year": "72BBY",
+  "count": 2
+}
+{
+  "id": 43,
+  "name": "Mace Windu",
+  "birth_year": "72BBY",
+  "count": 2
+}
+{
+  "id": 21,
+  "name": "Palpatine",
+  "birth_year": "82BBY",
+  "count": 2
+}
+{
+  "id": 21,
+  "name": "Cliegg Lars",
+  "birth_year": "82BBY",
+  "count": 2
+}
+{
+  "id": 32,
+  "name": "Qui-Gon Jinn",
+  "birth_year": "92BBY",
+  "count": 2
+}
+{
+  "id": 32,
+  "name": "Ki-Adi-Mundi",
+  "birth_year": "92BBY",
+  "count": 2
+}
+cat people.json | jq 'group_by(.birth_year)[] | {id: .[0].id, name: .[].name, birth_year: .[0].birth_year , count: length}'|jq '. | select(.count==2)'
+Réponse :  il y a six (6)  pairs  des personnages nés en même temps.
+
+---------------------------------
+
+5.Renvoyez le numéro du premier film dans lequel chaque personnage a été vu suivi du nom du personnage. N'affichez que les 10 premières lignes. (Pas de Réponse attendue)
+{
+  "films": "http://swapi.co/api/films/1/",
+  "name": "Luke Skywalker"
+}
+{
+  "films": "http://swapi.co/api/films/1/",
+  "name": "C-3PO"
+}
+{
+  "films": "http://swapi.co/api/films/1/",
+Commande : cat people.json | jq .[] | jq '{films: .films[], name}' | jq '. | select(.films == http://swapi.co/api/films/1/)' | head -n 10
+Réponse : Pas de réponse attendue
+
+---------------------------------
+
